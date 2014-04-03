@@ -27,4 +27,6 @@ examples:
   wpadapt -s=OLD.DOMAIN.COM -f=new.domain.dev -i remote_db.sql local_db.sql
 ```
 
+This is quick and dirty, only tested on smallish sql files.
+
 Improvements and suggestions welcome!
