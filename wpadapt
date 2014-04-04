@@ -78,49 +78,56 @@ for($i = 1; $i < count($argv); $i++)
  */
 
 if ( ! $search) {
-  exit("\nERROR: Please provide a `-search` argument, e.g. `-search=old.domain.com`\n");
+  bye("ERROR: Please provide a `-search` argument, e.g. `-search=old.domain.com`");
 }
 
 if ( ! $replace) {
-  exit("\nERROR: Please provide a `-replace` argument, e.g. `-replace=new.domain.com`\n");
+  bye("ERROR: Please provide a `-replace` argument, e.g. `-replace=new.domain.com`");
 }
 
 if ( ! $source) {
-  exit("\nERROR: Please provide a source file path. (First file path)\n");
+  bye("ERROR: Please provide a source file path. (First file path)");
 }
 
 if ( ! $destination) {
-    exit("\nERROR: Please provide a destination file path. (Second file path)\n");
+  bye("ERROR: Please provide a destination file path. (Second file path)");
 }
 
 if ( ! file_exists($source)) {
-  exit("\nERROR: The source file does not exist.\nPath: $source\n");
+  bye("ERROR: The source file does not exist.\nPath: $source");
 }
 
 /*
  * Functions
  */
 
+function line($text = '') {
+  echo $text . "\n";
+}
+
+function bye($text)
+{
+  line($text . "\n");
+  exit();
+}
+
 function replace_urls_in_serialized($search, $replace, $string)
 {
   $replaced = preg_replace_callback('/s:(\d+):([\\]*[\'"])(.*?)\2;/s', 'replace_urls_callback', $string);
-  return serialize($replaced);
+  return $replaced;
 }
 
 function replace_urls_callback($matches)
 {
   global $str_replace_function;
-
   $replaced   = $str_replace_function('foo.bar.com', 'com.bar.foo', $matches[0]);
   $serialized = serialize($replaced);
-
   return $serialized;
 }
 
 function replace_urls_in_string($search, $replace, $string) 
 {
   global $str_replace_function;
-
   return $str_replace_function($search, $replace, $string);
 };
 
@@ -128,10 +135,22 @@ function replace_urls_in_string($search, $replace, $string)
  * Procedure
  */
 
+line();
+
+line("Load file: $source");
 $fileContents = file_get_contents($source);
-$fileContents = replace_urls_in_serialized($search, $replace, $string);
+if ( ! $fileContents) {
+  line("ERROR: Either the file does not exist or it is empty.");
+  exit();
+}
+
+line("Search and replace in serialized data...");
+$fileContents = replace_urls_in_serialized($search, $replace, $fileContents);
+
+line("Search and replace everywhere else...");
 $fileContents = replace_urls_in_string($search, $replace, $fileContents);
 
+line("Write to destination: $destination");
 file_put_contents($destination, $fileContents);
 
-exit(0);
+bye("Complete!");
