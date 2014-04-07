@@ -119,8 +119,8 @@ function replace_urls_in_serialized($search, $replace, $string)
 
 function replace_urls_callback($matches)
 {
-  global $str_replace_function;
-  $replaced   = $str_replace_function('foo.bar.com', 'com.bar.foo', $matches[0]);
+  global $str_replace_function, $search, $replace;
+  $replaced   = $str_replace_function($search, $replace, $matches[0]);
   $serialized = serialize($replaced);
   return $serialized;
 }
