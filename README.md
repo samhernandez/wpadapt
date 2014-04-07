@@ -23,8 +23,8 @@ options:
 examples:
 
   wpadapt -search=old.domain.com -replace=new.domain.dev remote_db.sql local_db.sql
-  wpadapt -s=old.domain.com -f=new.domain.dev remote_db.sql local_db.sql
-  wpadapt -s=OLD.DOMAIN.COM -f=new.domain.dev -i remote_db.sql local_db.sql
+  wpadapt -s=old.domain.com -r=new.domain.dev remote_db.sql local_db.sql
+  wpadapt -s=OLD.DOMAIN.COM -r=new.domain.dev -i remote_db.sql local_db.sql
 ```
 
 Tested on a 15mb file, it runs in less than a second.
