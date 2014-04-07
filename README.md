@@ -1,7 +1,7 @@
 WordPress Adapt
 ---
 
-A tool to adapt an sql file dumped from WordPress from one domain to another.
+A simple executable to adapt an sql file dumped from WordPress from one domain to another. There are several robust tools out there that do this already. I just needed something quick, simple, and database-independent. This should work as a search/replace on any sql file with or without serialized data.
 
 Put the `wpadapt` executable file somewhere in your system path.
 
@@ -27,6 +27,6 @@ examples:
   wpadapt -s=OLD.DOMAIN.COM -f=new.domain.dev -i remote_db.sql local_db.sql
 ```
 
-This is quick and dirty, only tested on smallish sql files.
+Tested on a 15mb file, it runs in less than a second.
 
 Improvements and suggestions welcome!
